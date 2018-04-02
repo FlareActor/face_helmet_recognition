@@ -8,7 +8,7 @@ def test_by_image_path(image_path):
     model = FaceHatMonitor()
     model.fit()
     print('训练完成...')
-    face, hat = model.predict(image_path)
+    face, hat = model.predict(image_path, True)
     print('身份:%s，安全帽:%s' % (face, '有' if hat == 1 else '无'))
 
 
@@ -39,7 +39,9 @@ def test_by_directory(path):
         files = list(filter(model._file_filter, os.listdir(dir_path)))
         for file_name in tqdm(files):
             image_path = os.path.join(dir_path, file_name)
-            face_result, hat_result = model.predict(image_path)
+            face_result, hat_result = model.predict(image_path, True,
+                                                    plot_to_dir=os.path.join('./result', dir_name),
+                                                    plot_to_name=file_name)
             if face_result != face_label:
                 print('%s人脸预测错误' % image_path)
                 face_error += 1
@@ -51,13 +53,13 @@ def test_by_directory(path):
 
 if __name__ == '__main__':
     # 测试扩增数据
-    test_by_directory('./argumentation')
+    test_by_directory('./augmentation')
 
     # 测试训练数据
     # test_by_directory('./data')
 
     # 测试单张图片
-    # test_by_image_path('./argumentation/B+安全帽/img_0_7148.JPG')
+    # test_by_image_path('./augmentation/A/img_0_0_1330.JPG')
 
     # 测试摄像头
     # test_by_camera()
