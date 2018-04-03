@@ -25,7 +25,7 @@ class FaceHatMonitor(object):
         self.known_face_encodings = self._make_comparable_set(nb_compare)
         # 获得安全帽图像的训练集
         helmet_x, helmet_y = self._make_helmet_train_set()
-        # 线性核SVM
+        # 高斯核SVM
         self.helmet_estimator = SVC(kernel='rbf', random_state=0)
         self.helmet_estimator.fit(helmet_x, helmet_y)
         self._process_pool.close()
@@ -203,7 +203,7 @@ class FaceHatMonitor(object):
     @classmethod
     def _extract_helmet_features(cls, image):
         """提取安全帽图像特征"""
-        image = cls._preprocess_helmet_image(image)
+        image = cls._preprocess_helmet_image(image)  # 可忽略
         R = image[:, :, 0].flatten() / 255.
         G = image[:, :, 1].flatten() / 255.
         B = image[:, :, 2].flatten() / 255.
